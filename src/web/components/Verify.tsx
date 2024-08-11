@@ -90,7 +90,7 @@ export const Verify = () => {
       if (userData?.user?.worldId) {
         console.log("User exists, updating login...");
 
-        if (userData.user && !userData.user.login) {
+        if (userData.user && !userData.user.loginId) {
           const updateUserResponse = await fetch(
             `/api/user/${hashed}?login=true`,
             {
@@ -126,7 +126,10 @@ export const Verify = () => {
         }
       }
 
-      if (!userData.user || (userData && userData.user && !userData.user.login)) {
+      if (
+        !userData.user ||
+        (userData && userData.user && !userData.user.loginId)
+      ) {
         setAlreadyDisplayed(false);
       } else {
         setAlreadyDisplayed(true);

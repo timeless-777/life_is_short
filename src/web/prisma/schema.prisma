@@ -10,7 +10,7 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   worldId   String   @unique
-  login   Boolean
+  loginId   Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

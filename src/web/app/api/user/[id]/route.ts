@@ -16,7 +16,7 @@ const connect = async () => {
 
 interface User {
   worldId: string;
-  login: boolean;
+  loginId: boolean;
 }
 
 const getUser = async (hash: string): Promise<User | null> => {
@@ -63,7 +63,7 @@ export const POST = async (
     const result = await prisma.user.create({
       data: {
         worldId: params.id,
-        login: true,
+        loginId: true,
       },
     });
 
