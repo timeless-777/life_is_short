@@ -64,7 +64,7 @@ export const Verify = () => {
         account: account.address!,
         abi: abi as unknown as Abi,
         functionName: "safeMint",
-        args: [account.address!, "1.json"],
+        args: [account.address!, `${selectedValue}.png`],
       });
     } catch (error) {
       throw new Error((error as BaseError).shortMessage);
