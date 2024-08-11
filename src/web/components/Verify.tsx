@@ -216,7 +216,7 @@ export const Verify = () => {
     if (pageCount === 6) {
       const intervalId = setInterval(() => {
         setPageCount((prevCount) => {
-          if (prevCount < 8) {
+          if (prevCount < 9) {
             return prevCount + 1;
           } else {
             clearInterval(intervalId);
