@@ -15,7 +15,7 @@ import {
   type BaseError,
 } from "wagmi";
 import { CONTRACT_ADDRESS } from "../utils/config";
-import abi from "../utils/abi/LifeIsShort.json";
+import abi from "../utils/abi/lifeIsShort.json";
 import { Abi } from "viem";
 import { injected } from "wagmi/connectors";
 import Link from "next/link";
