@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   IDKitWidget,
   VerificationLevel,
@@ -19,8 +19,10 @@ import abi from "../utils/abi/lifeIsShort.json";
 import { Abi } from "viem";
 import { injected } from "wagmi/connectors";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Verify = () => {
+  const videoRef = useRef(null);
   const account = useAccount();
   const { connect } = useConnect();
   const app_id = process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`;
@@ -37,7 +39,11 @@ export const Verify = () => {
   const [alreadyDisplayed, setAlreadyDisplayed] = useState<boolean | null>(
     null
   );
-  const [pageCount, setPageCount] = useState<number>(0);
+  const [pageCount, setPageCount] = useState<number>(1);
+  const [startCounting, setStartCounting] = useState<boolean>(false);
+  const [selectedValue, setSelectedValue] = useState<number>(0);
+
+  const [countdown, setCountdown] = useState<number>(0);
 
   const {
     data: hash,
@@ -143,6 +149,19 @@ export const Verify = () => {
     }
   };
 
+  const choiceClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { clientX, currentTarget } = e;
+    const { offsetWidth, offsetLeft } = currentTarget;
+
+    // クリック位置が画面の中央より左なら1、右なら2を設定
+    if (clientX - offsetLeft < offsetWidth / 2) {
+      setSelectedValue(1);
+    } else {
+      setSelectedValue(2);
+    }
+    setPageCount(5);
+  };
+
   const resetUser = async () => {
     const updateUserResponse = await fetch(`/api/user/${hashed}?login=false`, {
       method: "PUT",
@@ -156,6 +175,42 @@ export const Verify = () => {
       throw new Error("Failed to update user");
     }
   };
+
+  useEffect(() => {
+    if (startCounting) {
+      const interval = setInterval(() => {
+        setPageCount((prevPageCount) => {
+          if (prevPageCount < 4) {
+            return prevPageCount + 1;
+          } else {
+            clearInterval(interval);
+            return prevPageCount;
+          }
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [startCounting]);
+
+  useEffect(() => {
+    if (pageCount === 4) {
+      // 3秒のカウントダウンを開始
+      setCountdown(3);
+      const intervalId = setInterval(() => {
+        setCountdown((prev: number) => {
+          if (prev > 1) {
+            return prev - 1;
+          } else {
+            clearInterval(intervalId);
+            setCountdown(0);
+            setPageCount(5); // 3秒後に関数を実行
+            return 0;
+          }
+        });
+      }, 1000);
+    }
+  }, [pageCount]);
 
   return (
     <>
@@ -179,15 +234,79 @@ export const Verify = () => {
                   </Link>
                 </p>
               </div>
-            ) : pageCount === 0 ? (
-              <p>Mint NFT</p>
+            ) : pageCount === 1 ? (
+              <div className="h-full">
+                <Image
+                  src="/img/page-1.png"
+                  alt="page-1"
+                  layout="fill"
+                  onLoad={() => setStartCounting(true)} // 画像がロードされたらカウント開始
+                />
+              </div>
+            ) : pageCount === 2 ? (
+              <div className="h-full">
+                <Image src="/img/page-2.png" alt="page-2" layout="fill" />
+              </div>
+            ) : pageCount === 3 ? (
+              <div className="h-full">
+                <Image src="/img/page-3.png" alt="page-3" layout="fill" />
+              </div>
+            ) : pageCount === 4 ? (
+              <div>
+                <div className="absolute top-0 left-0 right-0 text-center text-4xl font-bold">
+                  {countdown}
+                </div>
+                <button className="h-full" onClick={(e) => choiceClick(e)}>
+                  <Image
+                    src="/img/choice.png"
+                    alt="page-choice"
+                    layout="fill"
+                  />
+                </button>
+              </div>
             ) : pageCount === 5 ? (
-              <button
-                onClick={mint}
-                className="text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
-              >
-                Mint NFT
+              <div className="fixed top-0 left-0 w-screen h-screen overflow-hidden">
+                <video
+                  ref={videoRef}
+                  src="/video/train.mov"
+                  autoPlay
+                  muted
+                  onEnded={() => setPageCount(6)}
+                  className="w-full h-full object-cover"
+                  playsInline
+                />
+              </div>
+            ) : pageCount === 6 ? (
+              <button className="h-full">
+                <Image
+                  src={`/img/answer-${selectedValue}.png`}
+                  alt="answer"
+                  layout="fill"
+                />
               </button>
+            ) : pageCount === 7 ? (
+              <div className="h-full">
+                <Image src="/img/result.png" alt="result" layout="fill" />
+              </div>
+            ) : pageCount === 8 ? (
+              <div className="h-full relative">
+                <Image
+                  src={`/img/mint-${selectedValue}.png`}
+                  alt="mint"
+                  layout="fill"
+                  className="object-cover"
+                />
+                <button
+                  onClick={mint}
+                  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
+                >
+                  Mint NFT
+                </button>
+              </div>
+            ) : pageCount === 9 ? (
+              <div className="h-full">
+                <Image src="/img/success.png" alt="success" layout="fill" />
+              </div>
             ) : (
               <p>Mint NFT</p>
             )}
