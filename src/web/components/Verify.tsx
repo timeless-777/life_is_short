@@ -213,10 +213,10 @@ export const Verify = () => {
   }, [pageCount]);
 
   useEffect(() => {
-    if (pageCount === 6) {
+    if (pageCount === 6 || pageCount === 7) {
       const intervalId = setInterval(() => {
         setPageCount((prevCount) => {
-          if (prevCount < 9) {
+          if (prevCount < 8) {
             return prevCount + 1;
           } else {
             clearInterval(intervalId);
