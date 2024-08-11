@@ -292,10 +292,7 @@ export const Verify = () => {
                 <Image src="/img/page-3.png" alt="page-3" layout="fill" />
               </div>
             ) : pageCount === 4 ? (
-              <div>
-                <div className="absolute top-0 left-0 right-0 text-center text-4xl font-bold">
-                  {countdown}
-                </div>
+              <>
                 <button className="h-full" onClick={(e) => choiceClick(e)}>
                   <Image
                     src="/img/choice.png"
@@ -303,7 +300,11 @@ export const Verify = () => {
                     layout="fill"
                   />
                 </button>
-              </div>
+
+                <div className="absolute top-40 left-0 right-0 text-center text-4xl font-bold">
+                  {countdown}
+                </div>
+              </>
             ) : pageCount === 5 ? (
               <div className="fixed top-0 left-0 w-screen h-screen overflow-hidden">
                 <video
@@ -341,7 +342,7 @@ export const Verify = () => {
                 <div>
                   <button
                     onClick={mint}
-                    className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 text-btn-text bg-btn-bg rounded-md px-8 py-4 text-xl font-semibold"
+                    className="absolute bottom-32 left-1/2 transform -translate-x-1/2 text-btn-text bg-btn-bg rounded-md px-8 py-4 text-xl font-semibold"
                   >
                     Mint NFT
                   </button>
