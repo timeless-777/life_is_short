@@ -6,7 +6,7 @@ import {
   VerificationLevel,
   ISuccessResult,
 } from "@worldcoin/idkit";
-import { verify } from "../api/actions/verify";
+import { verify } from "../apis/actions/verify";
 import {
   useAccount,
   useConnect,

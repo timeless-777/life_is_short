@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Verify } from "../components/Verify";
 
 export default function Home() {
