@@ -17,7 +17,7 @@ contract LifeIsShort is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         return "https://example.com";
     }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(address to, string memory uri) public {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
