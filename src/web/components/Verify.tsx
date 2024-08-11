@@ -252,9 +252,28 @@ export const Verify = () => {
               //     </Link>
               //   </p>
               // </div>
-              <div className="h-full">
-                <Image src="/img/success.png" alt="success" layout="fill" />
-              </div>
+              <>
+                <div className="h-full">
+                  <Image
+                    src="/img/success.png"
+                    alt="success"
+                    layout="fill"
+                    // className="object-cover"
+                  />
+                </div>
+                <div>
+                  <div className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2">
+                    Tx Hash 👉{" "}
+                    <Link
+                      href={`https://base-sepolia.blockscout.com/tx/${hash}`}
+                      className="text-blue-500 underline"
+                      target="_blank"
+                    >
+                      {hash}
+                    </Link>
+                  </div>
+                </div>
+              </>
             ) : pageCount === 1 ? (
               <div className="h-full">
                 <Image
@@ -310,20 +329,24 @@ export const Verify = () => {
                 <Image src="/img/result.png" alt="result" layout="fill" />
               </div>
             ) : pageCount === 8 ? (
-              <div className="h-full relative">
-                <Image
-                  src={`/img/mint-${selectedValue}.png`}
-                  alt="mint"
-                  layout="fill"
-                  className="object-cover"
-                />
-                <button
-                  onClick={mint}
-                  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
-                >
-                  Mint NFT
-                </button>
-              </div>
+              <>
+                <div className="h-full">
+                  <Image
+                    src={`/img/mint-${selectedValue}.png`}
+                    alt="mint"
+                    layout="fill"
+                    // className="object-cover"
+                  />
+                </div>
+                <div>
+                  <button
+                    onClick={mint}
+                    className="absolute bottom-1/3 left-1/2 transform -translate-x-1/2 text-btn-text bg-btn-bg rounded-md px-8 py-4 text-xl font-semibold"
+                  >
+                    Mint NFT
+                  </button>
+                </div>
+              </>
             ) : pageCount === 9 ? (
               <div className="h-full">
                 <Image src="/img/success.png" alt="success" layout="fill" />
