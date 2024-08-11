@@ -212,27 +212,48 @@ export const Verify = () => {
     }
   }, [pageCount]);
 
+  useEffect(() => {
+    if (pageCount === 6) {
+      const intervalId = setInterval(() => {
+        setPageCount((prevCount) => {
+          if (prevCount < 8) {
+            return prevCount + 1;
+          } else {
+            clearInterval(intervalId);
+            return prevCount;
+          }
+        });
+      }, 1000);
+
+      // Cleanup function to clear the interval if the component unmounts
+      return () => clearInterval(intervalId);
+    }
+  }, [pageCount]);
+
   return (
     <>
       {alreadyDisplayed === false &&
         (account.isConnected ? (
           <div className="flex flex-col justify-center items-center">
             {status === "success" ? (
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-2xl font-semibold">✅ Minted</p>
-                <p className="text-2xl font-semibold">
-                  Address 👉 {account.address}
-                </p>
-                <p>
-                  Tx Hash 👉{" "}
-                  <Link
-                    href={`https://base-sepolia.blockscout.com/tx/${hash}`}
-                    className="text-blue-500 underline"
-                    target="_blank"
-                  >
-                    {hash}
-                  </Link>
-                </p>
+              // <div className="flex flex-col justify-center items-center">
+              //   <p className="text-2xl font-semibold">✅ Minted</p>
+              //   <p className="text-2xl font-semibold">
+              //     Address 👉 {account.address}
+              //   </p>
+              //   <p>
+              //     Tx Hash 👉{" "}
+              //     <Link
+              //       href={`https://base-sepolia.blockscout.com/tx/${hash}`}
+              //       className="text-blue-500 underline"
+              //       target="_blank"
+              //     >
+              //       {hash}
+              //     </Link>
+              //   </p>
+              // </div>
+              <div className="h-full">
+                <Image src="/img/success.png" alt="success" layout="fill" />
               </div>
             ) : pageCount === 1 ? (
               <div className="h-full">
@@ -308,7 +329,7 @@ export const Verify = () => {
                 <Image src="/img/success.png" alt="success" layout="fill" />
               </div>
             ) : (
-              <p>Mint NFT</p>
+              <p></p>
             )}
           </div>
         ) : (
