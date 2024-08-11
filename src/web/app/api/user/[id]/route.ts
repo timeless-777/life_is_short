@@ -95,7 +95,7 @@ export const PUT = async (
         worldId: params.id,
       },
       data: {
-        login: login,
+        loginId: login,
       },
     });
     return NextResponse.json({ message: result }, { status: 200 });

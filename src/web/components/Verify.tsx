@@ -34,7 +34,10 @@ export const Verify = () => {
   }
 
   const [hashed, setHashed] = useState<string>("");
-  const [alreadyDisplayed, setAlreadyDisplayed] = useState<boolean | null>(null);
+  const [alreadyDisplayed, setAlreadyDisplayed] = useState<boolean | null>(
+    null
+  );
+  const [pageCount, setPageCount] = useState<number>(0);
 
   const {
     data: hash,
@@ -176,13 +179,17 @@ export const Verify = () => {
                   </Link>
                 </p>
               </div>
-            ) : (
+            ) : pageCount === 0 ? (
+              <p>Mint NFT</p>
+            ) : pageCount === 5 ? (
               <button
                 onClick={mint}
                 className="text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
               >
                 Mint NFT
               </button>
+            ) : (
+              <p>Mint NFT</p>
             )}
           </div>
         ) : (
@@ -195,28 +202,38 @@ export const Verify = () => {
             </button>
           </div>
         ))}
-      {alreadyDisplayed === null && (
-        <div className="flex flex-col justify-center items-center">
-          <IDKitWidget
-            app_id={
-              (process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`) || ""
-            }
-            action={(process.env.NEXT_PUBLIC_WLD_ACTION as string) || ""}
-            onSuccess={onSuccess}
-            handleVerify={handleProof}
-            verification_level={VerificationLevel.Device}
-          >
-            {({ open }) => (
-              <button
-                onClick={open}
-                className="text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
-              >
-                Verify with World ID
-              </button>
-            )}
-          </IDKitWidget>
-        </div>
-      )}
+      {alreadyDisplayed === null &&
+        (account.isConnected ? (
+          <div className="flex flex-col justify-center items-center">
+            <IDKitWidget
+              app_id={
+                (process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`) || ""
+              }
+              action={(process.env.NEXT_PUBLIC_WLD_ACTION as string) || ""}
+              onSuccess={onSuccess}
+              handleVerify={handleProof}
+              verification_level={VerificationLevel.Device}
+            >
+              {({ open }) => (
+                <button
+                  onClick={open}
+                  className="text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
+                >
+                  Verify with World ID
+                </button>
+              )}
+            </IDKitWidget>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center">
+            <button
+              onClick={() => connect({ connector: injected() })}
+              className="text-btn-text bg-btn-bg rounded-md px-8 py-4 text-2xl font-semibold"
+            >
+              Connect Wallet
+            </button>
+          </div>
+        ))}
       {alreadyDisplayed && (
         <div className="flex flex-col justify-center items-center">
           <p className="text-2xl font-semibold animate-fadeIn text-text-main">
@@ -226,10 +243,8 @@ export const Verify = () => {
       )}
       <button
         onClick={resetUser}
-        className="text-btn-text px-4 py-2 text-lg font-semibold mt-16 absolute bottom-0 right-0 mb-4 mr-4"
-      >
-        Reset User
-      </button>
+        className="text-btn-text px-16 py-4 text-lg font-semibold mt-16 absolute bottom-0 right-0 mb-4 mr-4"
+      ></button>
     </>
   );
 };
