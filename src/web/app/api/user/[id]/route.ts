@@ -1,14 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-
-// Create a new PrismaClient instance
-const prisma = new PrismaClient();
 
 // Function to connect to the database
 const connect = async () => {
   try {
     // Connect to the database using Prisma
-    prisma.$connect();
+    await prisma.$connect();
   } catch (error) {
     return Error("Failed to connect to the database");
   }
