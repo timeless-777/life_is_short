@@ -187,7 +187,7 @@ export const Verify = () => {
             return prevPageCount;
           }
         });
-      }, 1000);
+      }, 3000);
 
       return () => clearInterval(interval);
     }
@@ -223,7 +223,7 @@ export const Verify = () => {
             return prevCount;
           }
         });
-      }, 1000);
+      }, 3000);
 
       // Cleanup function to clear the interval if the component unmounts
       return () => clearInterval(intervalId);
